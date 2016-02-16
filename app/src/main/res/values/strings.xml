@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Bus Tracker</string>
+    <string-array name="destination_bus_stops">
+        <item>Select your destination Bus Stop</item>
+        <item>Bus Stop 1</item>
+        <item>Bus Stop 2</item>
+        <item>Bus Stop 3</item>
+        <item>Bus Stop 4</item>
+        <item>Bus Stop 5</item>
+        <item>Bus Stop 6</item>
+        <item>Bus Stop 7</item>
+        <item>Bus Stop 8</item>
+    </string-array>
+    <string-array name="source_bus_stops">
+        <item>Select your current Bus stop</item>
+        <item>Bus Stop 1</item>
+        <item>Bus Stop 2</item>
+        <item>Bus Stop 3</item>
+        <item>Bus Stop 4</item>
+        <item>Bus Stop 5</item>
+        <item>Bus Stop 6</item>
+        <item>Bus Stop 7</item>
+        <item>Bus Stop 8</item>
+    </string-array>
+</resources>
