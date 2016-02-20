@@ -9,11 +9,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
-public class Home extends AppCompatActivity{
+import org.json.JSONArray;
+import org.json.JSONException;
+
+public class Home extends AppCompatActivity implements RetrieveJSON.MyCallbackInterface{
     Boolean destinationFlag = Boolean.FALSE;
     Boolean sourceFlag = Boolean.FALSE;
 
     String TAG = "edu.nitt.iot.bustracker.DEBUG";
+    String selectedDestination;
+    String selectedSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +42,7 @@ public class Home extends AppCompatActivity{
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int pos, long id) {
-                String selectedDestination = parent.getItemAtPosition(pos).toString();
+                selectedDestination = parent.getItemAtPosition(pos).toString();
 
                 if(pos==0){
                     destinationFlag = Boolean.FALSE;
@@ -64,7 +69,7 @@ public class Home extends AppCompatActivity{
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int pos, long id) {
-                String selectedSource = parent.getItemAtPosition(pos).toString();
+                selectedSource = parent.getItemAtPosition(pos).toString();
 
                 if(pos==0){
                     sourceFlag = Boolean.FALSE;
@@ -91,23 +96,28 @@ public class Home extends AppCompatActivity{
     }
 
     private void setList() {
+        Log.i(TAG,selectedDestination+" and the other station is "+selectedSource);
+        new RetrieveJSON(this).execute("http://714c435b.ngrok.io/stations/getAvailableBuses?station1="+selectedSource+"&station2="+selectedDestination);
+    }
+
+    @Override
+    public void onRequestCompleted(JSONArray result){
+        Log.i(TAG,result.toString());
         ListView listView = (ListView) findViewById(R.id.listViewBusList);
 
         // Defined Array values to show in ListView
-        String[] values = new String[] { "Dummy Data",
-                "Dummy Data",
-                "Dummy Data",
-                "Dummy Data",
-                "Dummy Data",
-                "Dummy Data",
-                "Dummy Data",
-                "Dummy Data",
-                "Dummy Data",
-                "Dummy Data",
-                "Dummy Data",
-                "Dummy Data",
-                "Dummy Data"
-        };
+        String[] values = new String[result.length()]; // 20 is max number of buses that could be returned
+        Log.i(TAG,"The number of buses are "+Integer.toString(result.length()));
+
+        for(int i=0;i<result.length();i++){
+            try {
+                Log.i(TAG,result.getJSONObject(i).getString("bus_no"));
+                values[i] = result.getJSONObject(i).getString("bus_no");
+            } catch (JSONException e) {
+                values[i] = "Server has experienced some error";
+                e.printStackTrace();
+            }
+        }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, values);
