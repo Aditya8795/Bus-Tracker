@@ -103,6 +103,7 @@ public class RetrieveJSON extends AsyncTask<String, Void, JSONArray> {
     protected JSONArray doInBackground(String... params) {
         // this accepts multiple strings as argument the first string is fed into the function getJSONFromUrl where the whole "Work" takes place
         String url = params[0];
+        Log.i(TAG,"do In Background is called");
         return getJSONFromUrl(url);
     }
 
